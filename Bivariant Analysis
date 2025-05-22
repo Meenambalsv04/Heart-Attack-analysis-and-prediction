@@ -1,0 +1,30 @@
+#continous numerical variables
+bi_num=['age', 'trtbps', 'chol',  'thalachh','oldpeak' ]
+#categorical numerical variables
+cat=['sex', 'cp','fbs','restecg','exng','slp', 'caa', 'thall']
+ig, axs = plt.subplots(3, 2, figsize=(14,14))
+axs = axs.ravel()
+
+# Plot the regression for each feature
+for i, col in enumerate(bi_num):
+    sns.regplot(x=col, y='output', data=df, ax=axs[i], color='black', scatter_kws={"color": "blue"})
+
+ig.delaxes(axs[-1])
+
+plt.tight_layout()
+plt.show()
+fig, axs = plt.subplots(4, 2, figsize=(12, 16))
+axs = axs.ravel()
+
+# Loop through each column in cat
+for i, col in enumerate(cat):
+    sns.barplot(x=col, y='output', data=df, ax=axs[i])
+
+# If there are fewer columns in cat than subplots, remove the extra subplots
+if len(cat) < len(axs):
+    for j in range(len(cat), len(axs)):
+        fig.delaxes(axs[j])
+
+plt.tight_layout()
+plt.show()
+
