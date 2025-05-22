@@ -1,0 +1,4 @@
+
+columns=['models','Accuracy','ROC']
+model= pd.DataFrame(model, columns=columns)
+model
