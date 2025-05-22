@@ -1,0 +1,46 @@
+import seaborn as sns
+import matplotlib.pyplot as plt 
+import numpy as np
+#count the number of occurrences of each unique value in a column 
+df.fbs.value_counts()
+fig, axes = plt.subplots(5, 3, figsize=(15, 15))
+# Flatten the 2D array of subplots to make them easier to access
+axes = axes.ravel()
+
+for i, feature in enumerate(df.columns):
+    # Plot a histogram of the feature in the current subplot
+    axes[i].hist(df[feature])
+    axes[i].set_title(feature)
+
+# If df has fewer columns than subplots, remove the extra subplots
+if len(df.columns) < len(axes):
+    for j in range(len(df.columns), len(axes)):
+        fig.delaxes(axes[j])
+
+# Adjust the spacing between subplots
+plt.tight_layout()
+# Show the plot
+plt.show()
+fig,axs= plt.subplots(5,3,figsize=(15,15))
+# Flatten the 2D array of subplots to make them easier to access
+axs = axs.ravel()
+for i, feature in enumerate(df.columns):
+    
+    axs[i].boxplot(df[feature])
+    axs[i].set_title(feature)
+
+# method used to remove an axis from a figure; here removing last grid--> 12th grid since we only have 11 numerical features
+fig.delaxes(axs[-1])
+# Adjust the spacing between subplots
+plt.tight_layout()
+# Show the plot
+plt.show()
+features=['trtbps', 'chol', 'oldpeak' ]
+for i in features:
+    #lower = df[i].quantile(0.10)
+    upper = df[i].quantile(0.90)
+    #df[i] = np.where(df[i] <lower, lower,df[i])
+    df[i] = np.where(df[i] >upper, upper,df[i])
+    print('Feature: ',i)
+    print('Skewness value: ',df[i].skew())
+    print('\n')
