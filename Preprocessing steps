@@ -1,0 +1,24 @@
+#import libraries
+import pandas as pd
+#Preprocessing steps
+df=pd.read_csv(r'C:\Users\meena\OneDrive\Documents\heart.csv')
+df=pd.read_csv(r'C:\Users\meena\OneDrive\Documents\heart.csv')
+df.head()
+#returns the first few rows of the DataFrame, by default 5 rows.
+#This is useful for getting a quick glance at the data, checking the column names, and verifying that the data has been loaded correctly.
+df.tail()
+#returns the last few rows of the DataFrame, by default 5 rows. 
+#This is useful for checking the end of the data, especially when working with large datasets.
+df.shape
+#returns a tuple representing the dimensionality of the DataFrame, i.e., the number of rows and columns. 
+#This is useful for understanding the size of the data.
+df.info()
+#provides a concise summary of the DataFrame, including the index dtype and column dtypes, non-nullable counts, and memory usage.
+#This is useful for understanding the data types and structure of the DataFrame.
+#check for missing values in column
+df.isnull()
+# Count the number of missing values in each column
+df.isnull().sum()
+df.dtypes
+#returns the data types of each column in the DataFrame. 
+#This is useful for understanding the data types of each column, which is essential for data analysis, cleaning, and processing.
