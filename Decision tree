@@ -1,0 +1,89 @@
+model=[]
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import roc_auc_score
+from sklearn.metrics import accuracy_score
+
+#assigning the features under a list
+
+features=['thall','caa','cp','oldpeak','exng','chol','thalachh']
+X= df[features]
+y= df.output
+
+X= scale(X)
+X_train,X_val,y_train,y_val= dataset(X,y)
+
+tree_model= DecisionTreeClassifier(random_state=1)
+tree_model.fit(X_train, y_train)
+preds= tree_model.predict(X_val)
+
+a='Decision Tree with top 7'
+acc=accuracy_score(y_val,preds)*100
+roc=roc_auc_score(y_val,preds)
+
+print('ACCURACY: ',acc)
+print('AUC score: ',roc)
+
+model.append((a,round(acc,4),round(roc,4)))
+X= df.drop('output',axis=1)
+y= df.output
+
+X= scale(X)
+X_train,X_val,y_train,y_val= dataset(X,y)
+
+tree_model= DecisionTreeClassifier(random_state=1)
+tree_model.fit(X_train, y_train)
+preds= tree_model.predict(X_val)
+
+a='Decision Tree with all features'
+acc=accuracy_score(y_val,preds)*100
+roc=roc_auc_score(y_val,preds)
+
+print('ACCURACY: ',acc)
+print('AUC score: ',roc)
+
+model.append((a,round(acc,4),round(roc,4)))
+
+features=['thall','caa','cp','oldpeak','exng','chol','thalachh']
+X= df[features]
+y= df.output
+
+depth = [1, 2, 3, 4, 5, 6, 10, 15, 20, None]
+leaf=[1, 5, 10, 15, 20, 500, 100, 200]
+scores=[]
+for d in depth:
+      for l in leaf:
+        dmodel = DecisionTreeClassifier(random_state=0,max_depth=d,min_samples_leaf=l)
+        dmodel.fit(X_train, y_train)
+
+        pred1 = dmodel.predict(X_val)
+        acc= accuracy_score(y_val,pred1)*100
+        auc = roc_auc_score(y_val,pred1)
+        #print('%4s %s -> auc %.3f accuracy  %.2f' % (d, l, auc, acc))
+
+        scores.append((d,l,auc))
+
+columns = ['max_depth', 'min_samples_leaf', 'auc']
+df_scores = pd.DataFrame(scores, columns=columns)
+
+pivot2 = df_scores.pivot(index='min_samples_leaf', columns=['max_depth'], values=['auc'])
+pivot2.round(3)
+#finalized decision tree model
+features=['thall','caa','cp','oldpeak','exng','chol','thalachh']
+X= df[features]
+y= df.output
+
+X= scale(X)
+X_train,X_val,y_train,y_val= dataset(X,y)
+
+tree_model= DecisionTreeClassifier(random_state=1,max_depth=5,min_samples_leaf=5)
+tree_model.fit(X_train, y_train)
+preds= tree_model.predict(X_val)
+
+a='Decision Tree with parameter tuning'
+acc=accuracy_score(y_val,preds)*100
+roc=roc_auc_score(y_val,preds)
+
+print('ACCURACY: ',acc)
+print('AUC score: ',roc)
+
+model.append((a,round(acc,4),round(roc,4)))
