@@ -1,0 +1,36 @@
+X= df.drop('output',axis=1)
+y= df.output
+#using mutual_info_classif for classification problem MI
+from sklearn.feature_selection import mutual_info_classif
+
+mi_scores = mutual_info_classif(X, y)
+mi_scores = pd.Series(mi_scores, name="MI Scores", index=X.columns)
+mi_scores = mi_scores.sort_values(ascending=False)
+
+mi_scores # show a few features with their MI scores
+
+#TEST TRAIN SPLIT
+
+from sklearn.model_selection import train_test_split
+
+# dataset split
+# creating a function for dataset split
+def dataset(X,y):
+    train_full_X, val_X, train_full_y, val_y = train_test_split(X, y,test_size=0.2,random_state = 0)
+
+# Use the same function above for the validation set
+    train_X, test_X, train_y, test_y = train_test_split(train_full_X, train_full_y, test_size=0.25,random_state = 0)
+    return (train_X, val_X, train_y, val_y)
+
+#MINMAX SCALING
+
+from sklearn.preprocessing import MinMaxScaler
+
+def scale(X):
+    scaler = MinMaxScaler()
+    scaler.fit(X)
+    return scaler.transform(X)
+
+# Assuming X is your dataset
+X_scaled = scale(X)
+print(X_scaled)
